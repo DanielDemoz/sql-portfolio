@@ -1,0 +1,17 @@
+# Database
+*.db
+*.sqlite
+*.sql.backup
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
