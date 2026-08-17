@@ -361,9 +361,11 @@ This project is licensed under the MIT License.
 ## Author
 
 **Daniel S. Demoz**
+- Email: asbdansi9@gmail.com
+- Phone: (437) 249-3308
 - LinkedIn: [daniel-s-demoz](https://www.linkedin.com/in/daniel-s-demoz)
-- Email: brukd.consultant@gmail.com
 - GitHub: [@DanielDemoz](https://github.com/DanielDemoz)
+- Website: [brukdconsultancy.com](https://brukdconsultancy.com)
 
 ## Acknowledgments
 
