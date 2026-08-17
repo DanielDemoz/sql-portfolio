@@ -39,3 +39,13 @@ Browse `schemas/`, `queries/`, `analytics/`, and `procedures/` folders independe
 **Interactive showcase:** https://danieldemoz.github.io/sql-portfolio/
 
 Each `.sql` file includes inline comments explaining logic, performance notes, and business context.
+
+## Author
+
+**Daniel S. Demoz**
+
+- Email: asbdansi9@gmail.com
+- Phone: (437) 249-3308
+- LinkedIn: [daniel-s-demoz](https://www.linkedin.com/in/daniel-s-demoz)
+- GitHub: [@DanielDemoz](https://github.com/DanielDemoz)
+- Website: [brukdconsultancy.com](https://brukdconsultancy.com)
