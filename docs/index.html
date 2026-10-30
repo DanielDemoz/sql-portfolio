@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQL Portfolio | PostgreSQL patterns | Daniel S. Demoz</title>
+  <meta name="description" content="A tested PostgreSQL schema and window-function examples, plus customer analytics patterns.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.danieldemoz.com/kit/rai.css">
+</head>
+<body>
+  <div class="rai-top"><div class="wrap">
+    <span>Daniel S. Demoz · Responsible AI in practice</span>
+    <span><a href="https://www.danieldemoz.com/projects">All projects</a> &nbsp;·&nbsp; <a href="https://github.com/DanielDemoz/sql-portfolio">Code</a></span>
+  </div></div>
+
+  <header class="rai-hero"><div class="wrap">
+    <p class="eyebrow">SQL portfolio</p>
+    <h1>SQL patterns that are tested, not just written</h1>
+    <p class="lead">A university database schema, nine window-function examples that run against it on every push, and customer analytics patterns for RFM, CLV and cohorts.</p>
+    <div class="chips">
+      <span class="chip status">Tested in CI · PostgreSQL 16</span>
+      <span class="chip">8-table schema</span>
+      <span class="chip">9 window-function examples</span>
+      <span class="chip">No personal data</span>
+    </div>
+  </div></header>
+
+  <nav class="steps" aria-label="Sections"><div class="wrap">
+    <a href="#files"><b>1</b>Files</a>
+    <a href="#tested"><b>2</b>Testing</a>
+    <a href="#framework"><b>3</b>Reliable AI checklist</a>
+  </div></nav>
+
+  <main>
+    <section id="files"><div class="wrap">
+      <h2>What is in the repository</h2>
+      <p class="sub">Three SQL files. Each has comments explaining the logic and the business use.</p>
+      <div class="grid g3" style="margin-top:18px"><div class="card"><p class="label"><code>schemas/university_system.sql</code></p><h3>University schema</h3><p>8 tables (departments, students, instructors, rooms, courses, prerequisites, schedules, enrollments), constraints, 15+ indexes and helper views.</p><p style="margin:0"><a href="https://github.com/DanielDemoz/sql-portfolio/blob/main/schemas/university_system.sql">View the SQL</a></p></div><div class="card"><p class="label"><code>queries/03_window_functions.sql</code></p><h3>Window functions on that schema</h3><p>9 worked examples: ranking, top-N per group, running totals, LAG and LEAD, FIRST_VALUE and LAST_VALUE, percentiles, moving averages, and gaps and islands.</p><p style="margin:0"><a href="https://github.com/DanielDemoz/sql-portfolio/blob/main/queries/03_window_functions.sql">View the SQL</a></p></div><div class="card"><p class="label"><code>analytics/customer_analytics.sql</code></p><h3>Customer analytics patterns</h3><p>RFM scoring, a simple CLV calculation, cohort retention and churn indicators. Written for a generic e-commerce schema (customers, orders, order items) that is not included here.</p><p style="margin:0"><a href="https://github.com/DanielDemoz/sql-portfolio/blob/main/analytics/customer_analytics.sql">View the SQL</a></p></div></div>
+    </div></section>
+    <section id="tested" style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
+      <h2>How it is tested</h2>
+      <p class="sub">Every push loads the schema into PostgreSQL 16 and runs every window-function example against it.</p>
+      <div class="grid g2" style="margin-top:18px"><div class="card"><h3>Checked automatically</h3><ul style="margin:0;padding-left:18px"><li>The university schema creates all tables, indexes and views without errors.</li><li>All 9 window-function examples run against that schema without errors.</li><li>One example used <code>PERCENTILE_CONT ... OVER ()</code>, which PostgreSQL does not allow. It was rewritten with a CTE.</li></ul></div><div class="card"><h3>Not checked</h3><ul style="margin:0;padding-left:18px"><li>The customer analytics file needs an e-commerce schema that is not in the repository. Adapt the table names before running it.</li><li>There is no sample data, so query results are not checked, only that the SQL runs.</li></ul></div></div>
+    </div></section>
+    <section id="framework"><div class="wrap">
+      <h2>Reliable AI checklist</h2>
+      <p class="sub">The six questions of the <a href="https://www.danieldemoz.com/#method">Reliable AI Adoption Framework</a>, answered for this project.</p>
+      <div class="fw" style="margin-top:18px">
+        <div class="card"><h3>Business problem</h3><p>Show the SQL patterns analysts use most: ranking, trends, cohorts and customer value.</p></div>
+        <div class="card"><h3>Data readiness</h3><p>Schemas only, no data. Student and customer data would be personal information if real.</p></div>
+        <div class="card"><h3>Governance and risk</h3><p>Student records fall under privacy law. Real use needs access controls and only the columns the analysis needs.</p></div>
+        <div class="card"><h3>Technology and tools</h3><p>Standard PostgreSQL, tested in CI, so the examples are known to run.</p></div>
+        <div class="card"><h3>People and adoption</h3><p>Comments explain each query in plain words for analysts learning the patterns.</p></div>
+        <div class="card"><h3>Outcomes and monitoring</h3><p>CI fails if a change breaks the schema or a query.</p></div>
+      </div>
+    </div></section>
+
+  </main>
+
+  <footer class="rai-foot"><div class="wrap">
+    <span>Built by Daniel S. Demoz · <a href="https://www.danieldemoz.com">danieldemoz.com</a></span>
+    <span>Schemas and queries only · no data included</span>
+  </div></footer>
+
+</body>
+</html>

@@ -197,29 +197,41 @@ ORDER BY sp.student_id, sp.year DESC, sp.semester;
 
 -- Example 7: Course enrollment analysis with percentiles
 -- Use Case: Identify popular vs unpopular courses
+-- PostgreSQL does not allow PERCENTILE_CONT ... OVER (), so the percentiles
+-- are computed once in a CTE and joined to every row.
+WITH active_schedules AS (
+    SELECT cs.*, c.course_code, c.course_name, c.max_enrollment
+    FROM course_schedules cs
+    JOIN courses c ON cs.course_id = c.course_id
+    WHERE c.is_active = TRUE
+),
+cutoffs AS (
+    SELECT
+        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY enrollment_count) AS p25,
+        PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY enrollment_count) AS p50,
+        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY enrollment_count) AS p75
+    FROM active_schedules
+)
 SELECT 
-    c.course_code,
-    c.course_name,
-    cs.semester,
-    cs.year,
-    cs.enrollment_count,
-    c.max_enrollment,
-    ROUND(100.0 * cs.enrollment_count / c.max_enrollment, 2) AS fill_rate,
-    ROUND(AVG(cs.enrollment_count) OVER (PARTITION BY cs.course_id), 2) AS avg_enrollment_this_course,
-    ROUND(AVG(cs.enrollment_count) OVER (), 2) AS avg_enrollment_all_courses,
-    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY cs.enrollment_count) OVER () AS median_enrollment,
-    NTILE(10) OVER (ORDER BY cs.enrollment_count) AS decile,
+    a.course_code,
+    a.course_name,
+    a.semester,
+    a.year,
+    a.enrollment_count,
+    a.max_enrollment,
+    ROUND(100.0 * a.enrollment_count / a.max_enrollment, 2) AS fill_rate,
+    ROUND(AVG(a.enrollment_count) OVER (PARTITION BY a.course_id), 2) AS avg_enrollment_this_course,
+    ROUND(AVG(a.enrollment_count) OVER (), 2) AS avg_enrollment_all_courses,
+    k.p50 AS median_enrollment,
+    NTILE(10) OVER (ORDER BY a.enrollment_count) AS decile,
     CASE 
-        WHEN cs.enrollment_count >= PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY cs.enrollment_count) OVER () 
-        THEN 'High Demand'
-        WHEN cs.enrollment_count >= PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY cs.enrollment_count) OVER () 
-        THEN 'Moderate Demand'
+        WHEN a.enrollment_count >= k.p75 THEN 'High Demand'
+        WHEN a.enrollment_count >= k.p25 THEN 'Moderate Demand'
         ELSE 'Low Demand'
     END AS demand_category
-FROM course_schedules cs
-JOIN courses c ON cs.course_id = c.course_id
-WHERE c.is_active = TRUE
-ORDER BY cs.enrollment_count DESC;
+FROM active_schedules a
+CROSS JOIN cutoffs k
+ORDER BY a.enrollment_count DESC;
 
 -- =============================================
 -- 6. MOVING AVERAGES & TREND ANALYSIS

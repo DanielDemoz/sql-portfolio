@@ -1,51 +1,39 @@
 # SQL Portfolio
 
-Collection of database schemas, advanced queries, and business analytics SQL across university, e-commerce, healthcare, and transit domains.
+PostgreSQL patterns that are tested, not just written.
 
-## Problem
+**Page:** https://danieldemoz.github.io/sql-portfolio/
 
-Hiring managers and collaborators need proof of production-style SQL—normalization, window functions, CTEs, optimization—not just isolated SELECT examples.
+## What is here
 
-## Approach
+| File | What it shows |
+|---|---|
+| `schemas/university_system.sql` | 8-table university schema with constraints, indexes and views |
+| `queries/03_window_functions.sql` | 9 window-function examples on that schema: ranking, top-N per group, running totals, LAG/LEAD, FIRST_VALUE/LAST_VALUE, percentiles, moving averages, gaps and islands |
+| `analytics/customer_analytics.sql` | RFM scoring, CLV, cohort retention and churn indicators for a generic e-commerce schema (customers, orders, order_items) that is not included |
 
-Organized schemas and query libraries by complexity: basic joins through recursive CTEs, window functions, stored procedures, and indexing strategies. Included RFM segmentation, cohort analysis, running totals, org hierarchies, and domain-specific analytics for four business scenarios.
+## Testing
 
-## Results
-
-- Four complete schema designs: university, e-commerce, healthcare, transit (TTC-inspired)
-- Query tiers from beginner through expert with commented alternatives
-- Optimization examples: composite/partial/GIN indexes and subquery-to-JOIN rewrites
-- Coverage for PostgreSQL (primary), MySQL, SQL Server, and SQLite variants
-
-## Tech stack
-
-PostgreSQL, MySQL, SQL Server (T-SQL), SQLite; pgAdmin / DBeaver compatible
+GitHub Actions loads the schema into PostgreSQL 16 and runs every window-function example on each push. One example used `PERCENTILE_CONT ... OVER ()`, which PostgreSQL does not allow, and was rewritten with a CTE. There is no sample data, so the tests check that the SQL runs, not its results.
 
 ## How to run
 
 ```bash
-git clone https://github.com/DanielDemoz/sql-portfolio.git
-cd sql-portfolio
-psql -U your_username -d your_database
-\i schemas/university_system.sql
-\i sample_data/generate_sample_data.sql
-\i queries/01_basic_queries.sql
+createdb university
+psql -d university -f schemas/university_system.sql
+psql -d university -f queries/03_window_functions.sql
 ```
 
-Browse `schemas/`, `queries/`, `analytics/`, and `procedures/` folders independently.
+For `analytics/customer_analytics.sql`, adapt the table names to your own e-commerce schema first.
 
-## Screenshot / demo
+## Responsible use
 
-**Interactive showcase:** https://danieldemoz.github.io/sql-portfolio/
+Student and customer records are personal information. Real use needs access controls, and queries should select only the columns an analysis needs.
 
-Each `.sql` file includes inline comments explaining logic, performance notes, and business context.
+## Project history
+
+The earlier README listed four schemas (university, e-commerce, healthcare, transit), stored procedures and sample data. Only the three files above are in the repository, so the README was corrected in October 2026.
 
 ## Author
 
-**Daniel S. Demoz**
-
-- Email: asbdansi9@gmail.com
-- Phone: (437) 249-3308
-- LinkedIn: [daniel-s-demoz](https://www.linkedin.com/in/daniel-s-demoz)
-- GitHub: [@DanielDemoz](https://github.com/DanielDemoz)
-- Website: [brukdconsultancy.com](https://brukdconsultancy.com)
+Daniel S. Demoz · [danieldemoz.com](https://www.danieldemoz.com) · [LinkedIn](https://www.linkedin.com/in/daniel-s-demoz) · [GitHub](https://github.com/DanielDemoz)
